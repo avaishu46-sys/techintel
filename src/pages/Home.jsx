@@ -18,7 +18,7 @@ function Home() {
       <Services />
       <Stats />
       <Insights />
-      <CaseStudies />
+      {/* <CaseStudies /> */}
       <Testimonials />
       <Newsletter />
       <FinalCTA />

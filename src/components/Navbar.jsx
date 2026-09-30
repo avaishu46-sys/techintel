@@ -26,7 +26,7 @@ function Navbar() {
         {/* =========================
             MAIN NAVBAR
         ========================== */}
-        <div className="relative border-b border-slate-200/80 bg-white/95 shadow-[0_10px_40px_-15px_rgba(15,23,42,0.18)] backdrop-blur-xl">
+        <div className="relative border-b border-transparent bg-transparent shadow-none backdrop-blur-none">
 
           <div className="grid h-20 grid-cols-[1fr_auto_1fr] items-center px-5 sm:px-8 lg:h-[88px] lg:px-12">
 
@@ -51,7 +51,7 @@ function Navbar() {
             ========================== */}
             <div className="col-start-2 hidden items-center lg:flex">
 
-              <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50/70 p-1.5">
+              <div className="flex items-center gap-1 rounded-full border border-white/20 bg-slate-950/90 p-1.5 shadow-lg shadow-black/20 backdrop-blur-md">
 
                 {navLinks.map((link) => (
                   <NavLink
@@ -64,7 +64,7 @@ function Navbar() {
                         className={`relative flex items-center rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
                           isActive
                             ? "text-white"
-                            : "text-slate-500 hover:text-slate-950"
+                            : "text-white hover:text-white/80"
                         }`}
                       >
 
@@ -107,14 +107,14 @@ function Navbar() {
             <div className="col-start-3 hidden items-center justify-self-end gap-4 lg:flex">
 
               {/* Explore indicator */}
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
+              <div className="flex items-center gap-2 text-xs font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.95)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
 
                 <span>Explore TechIntel</span>
               </div>
 
               {/* Divider */}
-              <div className="h-7 w-px bg-slate-200" />
+              <div className="h-7 w-px bg-white/40" />
 
               {/* Contact CTA */}
               <Link
