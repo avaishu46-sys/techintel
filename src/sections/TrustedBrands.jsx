@@ -55,12 +55,12 @@ function TrustedBrands() {
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative">
 
         {/* =========================
             SECTION HEADER
         ========================== */}
-        <div className="mx-auto mb-12 max-w-2xl text-center">
+        <div className="mx-auto mb-12 max-w-2xl px-6 text-center">
 
           <div className="flex justify-center">
             <SectionLabel>
@@ -81,27 +81,12 @@ function TrustedBrands() {
         {/* =========================
             LOGO MARQUEE
         ========================== */}
-        <div className="relative">
-
-          {/* Left fade */}
-          <div
-            className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-white to-transparent sm:w-24"
-            aria-hidden="true"
-          />
-
-          {/* Right fade */}
-          <div
-            className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-white to-transparent sm:w-24"
-            aria-hidden="true"
-          />
-
-          <LogoMarquee logos={logos} />
-        </div>
+        <LogoMarquee logos={logos} />
 
         {/* =========================
             BOTTOM STATEMENT
         ========================== */}
-        <div className="mt-12 flex items-center justify-center gap-3 text-xs font-medium text-slate-400">
+        <div className="mx-auto mt-12 flex max-w-7xl items-center justify-center gap-3 px-6 text-xs font-medium text-slate-400 lg:px-8">
           <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
 
           <span>

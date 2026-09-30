@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 function ResourceCard({
   resource,
+  linkTo,
 }) {
   const {
     title,
@@ -26,7 +27,7 @@ function ResourceCard({
           <img
             src={image}
             alt={title}
-            className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+            className="h-full w-full object-contain"
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-gradient-to-br from-slate-950 to-slate-800">
@@ -60,7 +61,7 @@ function ResourceCard({
         )}
 
         <Link
-          to={`/resources/${slug}`}
+          to={linkTo || `/resources/${slug}`}
           className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-950"
         >
           Explore Resource

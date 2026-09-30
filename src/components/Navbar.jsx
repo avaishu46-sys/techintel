@@ -20,15 +20,15 @@ function Navbar() {
   ];
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 px-4 pt-4 sm:px-6">
-      <nav className="mx-auto max-w-7xl">
+    <header className="fixed inset-x-0 top-0 z-50">
+      <nav className="w-full">
 
         {/* =========================
             MAIN NAVBAR
         ========================== */}
-        <div className="relative rounded-2xl border border-slate-200/80 bg-white/95 shadow-[0_10px_40px_-15px_rgba(15,23,42,0.18)] backdrop-blur-xl">
+        <div className="relative border-b border-slate-200/80 bg-white/95 shadow-[0_10px_40px_-15px_rgba(15,23,42,0.18)] backdrop-blur-xl">
 
-          <div className="flex h-[70px] items-center justify-between px-4 sm:px-6">
+          <div className="grid h-20 grid-cols-[1fr_auto_1fr] items-center px-5 sm:px-8 lg:h-[88px] lg:px-12">
 
             {/* =========================
                 LOGO IMAGE
@@ -36,20 +36,20 @@ function Navbar() {
             <Link
               to="/"
               onClick={() => setIsOpen(false)}
-              className="group flex shrink-0 items-center"
+              className="group col-start-1 flex shrink-0 items-center"
               aria-label="TechIntel Home"
             >
               <img
                 src={logo}
                 alt="TechIntel"
-                className="h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] sm:h-10"
+                className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] sm:h-14"
               />
             </Link>
 
             {/* =========================
                 DESKTOP NAVIGATION
             ========================== */}
-            <div className="hidden items-center lg:flex">
+            <div className="col-start-2 hidden items-center lg:flex">
 
               <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50/70 p-1.5">
 
@@ -104,7 +104,7 @@ function Navbar() {
             {/* =========================
                 RIGHT SIDE
             ========================== */}
-            <div className="hidden items-center gap-4 lg:flex">
+            <div className="col-start-3 hidden items-center justify-self-end gap-4 lg:flex">
 
               {/* Explore indicator */}
               <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
@@ -140,7 +140,7 @@ function Navbar() {
             <button
               type="button"
               onClick={() => setIsOpen((prev) => !prev)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition-all duration-300 hover:border-teal-400 hover:bg-teal-50 hover:text-teal-600 lg:hidden"
+              className="col-start-3 flex h-11 w-11 items-center justify-center justify-self-end rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition-all duration-300 hover:border-teal-400 hover:bg-teal-50 hover:text-teal-600 lg:hidden"
               aria-label={isOpen ? "Close navigation" : "Open navigation"}
               aria-expanded={isOpen}
             >

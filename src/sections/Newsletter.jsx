@@ -1,117 +1,428 @@
+// import { useState } from "react";
+// import { ArrowRight, CheckCircle, Mail, Sparkles, Users, Bell, Check } from "lucide-react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import SectionLabel from "../components/SectionLabel";
+
+// const TOPICS = [
+//   "B2B Marketing Strategy",
+//   "AI & Automation",
+//   "Demand Generation",
+//   "Tech Analytics",
+// ];
+
+// function Newsletter() {
+//   const [email, setEmail] = useState("");
+//   const [selectedTopics, setSelectedTopics] = useState(["B2B Marketing Strategy"]);
+//   const [submitted, setSubmitted] = useState(false);
+
+//   const toggleTopic = (topic) => {
+//     setSelectedTopics((prev) =>
+//       prev.includes(topic)
+//         ? prev.filter((t) => t !== topic)
+//         : [...prev, topic]
+//     );
+//   };
+
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+//     if (!email) return;
+
+//     /* 
+//       Backend integration placeholder:
+//       Send { email, topics: selectedTopics }
+//     */
+
+//     setSubmitted(true);
+//     setEmail("");
+//   };
+
+//   return (
+//     <section className="relative overflow-hidden bg-slate-50 py-20 lg:py-28 text-slate-900">
+//       {/* Background Soft Glow Effects */}
+//       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-teal-200/40 blur-3xl rounded-full pointer-events-none" />
+//       <div className="absolute top-10 right-10 w-72 h-72 bg-sky-200/30 blur-2xl rounded-full pointer-events-none" />
+
+//       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
+//         {/* Header Block */}
+//         <div className="text-center max-w-3xl mx-auto">
+//           <div className="flex justify-center">
+//             <SectionLabel>Curated Intelligence</SectionLabel>
+//           </div>
+//           <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+//             Tailor your technology insights.
+//           </h2>
+//           <p className="mt-4 text-base leading-relaxed text-slate-600">
+//             Select the topics you care about most and get actionable strategy, trends, and growth resources delivered weekly.
+//           </p>
+//         </div>
+
+//         {/* Main Bento Container */}
+//         <motion.div
+//           initial={{ opacity: 0, y: 25 }}
+//           whileInView={{ opacity: 1, y: 0 }}
+//           viewport={{ once: true }}
+//           transition={{ duration: 0.6 }}
+//           className="mt-12 grid gap-6 md:grid-cols-12 items-stretch"
+//         >
+//           {/* Bento Card 1: Main Form & Topic Selection (8 Cols) */}
+//           <div className="md:col-span-8 flex flex-col justify-between rounded-3xl border border-slate-200/80 bg-white/80 p-8 sm:p-10 shadow-xl shadow-slate-200/50 backdrop-blur-xl">
+//             <div>
+//               {/* Interactive Tag Pill Selector */}
+//               <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase mb-4">
+//                 1. Choose your focus areas:
+//               </p>
+
+//               <div className="flex flex-wrap gap-2.5 mb-8">
+//                 {TOPICS.map((topic) => {
+//                   const isSelected = selectedTopics.includes(topic);
+//                   return (
+//                     <motion.button
+//                       key={topic}
+//                       type="button"
+//                       whileHover={{ scale: 1.03 }}
+//                       whileTap={{ scale: 0.97 }}
+//                       onClick={() => toggleTopic(topic)}
+//                       className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 ${
+//                         isSelected
+//                           ? "bg-teal-600 text-white shadow-md shadow-teal-600/20"
+//                           : "bg-slate-100 text-slate-600 hover:bg-slate-200/80 border border-slate-200/60"
+//                       }`}
+//                     >
+//                       {isSelected && <Check className="h-3.5 w-3.5 stroke-[3]" />}
+//                       {topic}
+//                     </motion.button>
+//                   );
+//                 })}
+//               </div>
+
+//               {/* Form Input Section */}
+//               <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase mb-3">
+//                 2. Enter your work address:
+//               </p>
+
+//               <AnimatePresence mode="wait">
+//                 {submitted ? (
+//                   <motion.div
+//                     key="success"
+//                     initial={{ opacity: 0, scale: 0.95 }}
+//                     animate={{ opacity: 1, scale: 1 }}
+//                     exit={{ opacity: 0 }}
+//                     className="flex items-center gap-3 rounded-2xl border border-teal-200 bg-teal-50/80 p-4 text-sm font-medium text-teal-900"
+//                   >
+//                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-teal-600 text-white">
+//                       <CheckCircle className="h-5 w-5" />
+//                     </div>
+//                     <div>
+//                       <p className="font-bold">Subscription confirmed!</p>
+//                       <p className="text-xs text-teal-700 mt-0.5">
+//                         We'll send curated insights on {selectedTopics.length} topic(s) to your inbox.
+//                       </p>
+//                     </div>
+//                   </motion.div>
+//                 ) : (
+//                   <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+//                     <div className="relative flex-1">
+//                       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+//                         <Mail className="h-5 w-5" />
+//                       </div>
+//                       <input
+//                         type="email"
+//                         value={email}
+//                         onChange={(e) => setEmail(e.target.value)}
+//                         placeholder="name@company.com"
+//                         required
+//                         className="w-full rounded-2xl border border-slate-200 bg-white pl-11 pr-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-all duration-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 shadow-sm"
+//                       />
+//                     </div>
+
+//                     <motion.button
+//                       whileHover={{ scale: 1.02 }}
+//                       whileTap={{ scale: 0.98 }}
+//                       type="submit"
+//                       className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition-all hover:bg-teal-600 focus:outline-none"
+//                     >
+//                       <span>Join Free</span>
+//                       <ArrowRight className="h-4 w-4" />
+//                     </motion.button>
+//                   </form>
+//                 )}
+//               </AnimatePresence>
+//             </div>
+
+//             <p className="mt-6 text-xs text-slate-400">
+//               Zero spam. Unsubscribe anytime with one click.
+//             </p>
+//           </div>
+
+//           {/* Bento Card 2: Social Proof & Stats (4 Cols) */}
+//           <div className="md:col-span-4 flex flex-col justify-between gap-6 rounded-3xl border border-slate-200/80 bg-gradient-to-br from-teal-500 to-teal-700 p-8 text-white shadow-xl shadow-teal-600/20">
+//             <div>
+//               <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-md mb-6">
+//                 <Sparkles className="h-5 w-5 text-white" />
+//               </div>
+
+//               <h3 className="text-xl font-bold leading-snug">
+//                 Trusted by technology leaders worldwide.
+//               </h3>
+
+//               <p className="mt-3 text-xs text-teal-100 leading-relaxed">
+//                 Get high-signal breakdowns of tech marketing trends before they go mainstream.
+//               </p>
+//             </div>
+
+//             <div className="border-t border-white/20 pt-6">
+//               <div className="flex items-center gap-3">
+//                 <div className="flex -space-x-2">
+//                   <div className="h-8 w-8 rounded-full bg-slate-200 border-2 border-teal-600 overflow-hidden">
+//                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Subscriber" />
+//                   </div>
+//                   <div className="h-8 w-8 rounded-full bg-slate-200 border-2 border-teal-600 overflow-hidden">
+//                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Subscriber" />
+//                   </div>
+//                   <div className="h-8 w-8 rounded-full bg-slate-200 border-2 border-teal-600 overflow-hidden">
+//                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Subscriber" />
+//                   </div>
+//                 </div>
+//                 <div>
+//                   <p className="text-sm font-bold">12,000+</p>
+//                   <p className="text-[11px] text-teal-100">Tech Marketers Subscribed</p>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </motion.div>
+//       </div>
+//     </section>
+//   );
+// }
+
+// export default Newsletter;
+
+
 import { useState } from "react";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, Mail, Sparkles, Layers, BookOpen, BarChart3, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionLabel from "../components/SectionLabel";
 
+const PREVIEWS = [
+  {
+    id: "trends",
+    label: "01. Market Trends",
+    icon: BarChart3,
+    title: "AI & Tech Buyer Behavior Shift",
+    excerpt: "How B2B tech buyers evaluate vendors in 2026: 72% rely on intent signals and peer-to-peer case studies before initial sales outreach."
+  },
+  {
+    id: "playbooks",
+    label: "02. Playbooks",
+    icon: BookOpen,
+    title: "Category Positioning Framework",
+    excerpt: "Step-by-step methodology to transform complex technical architecture into high-converting demand gen narratives."
+  },
+  {
+    id: "data",
+    label: "03. Data Snippets",
+    icon: Layers,
+    title: "CAC Benchmarks Across Enterprise SaaS",
+    excerpt: "A breakdown of channel effectiveness, direct response performance, and multi-touch attribution metrics."
+  }
+];
+
 function Newsletter() {
+  const [activeTab, setActiveTab] = useState("trends");
+  const [cadence, setCadence] = useState("weekly");
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const activeContent = PREVIEWS.find((p) => p.id === activeTab);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!email) return;
 
-    /*
-      Backend integration will be added later.
-
-      Example:
-
-      await fetch(
-        `${import.meta.env.VITE_API_URL}/api/newsletter`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
-    */
+    /* Backend API integration placeholder */
 
     setSubmitted(true);
     setEmail("");
   };
 
   return (
-    <section className="bg-white py-24 lg:py-28">
-      <div className="mx-auto max-w-5xl px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-slate-50 py-20 lg:py-28 text-slate-900">
+      {/* Background Lighting & Grid Accents */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40" />
+      <div className="absolute -top-20 left-1/3 h-96 w-96 rounded-full bg-teal-200/40 blur-3xl pointer-events-none" />
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative overflow-hidden rounded-[2rem] bg-slate-950 px-7 py-14 text-center sm:px-12 lg:px-20"
-        >
-          {/* Decorative circles */}
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-teal-500/10 blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
+      <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
+        
+        {/* Header Block */}
+        <div className="text-center max-w-3xl mx-auto">
+          <div className="flex justify-center">
+            <SectionLabel>Inside The Newsletter</SectionLabel>
+          </div>
+          <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+            See what you'll get before you subscribe.
+          </h2>
+          <p className="mt-4 text-base text-slate-600">
+            Preview interactive editions of our weekly research and choose the frequency that fits your schedule.
+          </p>
+        </div>
 
-          <div className="relative">
+        {/* Main Content Stage */}
+        <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:items-stretch">
+          
+          {/* Left Column: Interactive Content Previewer (7 Cols) */}
+          <div className="lg:col-span-7 flex flex-col justify-between rounded-3xl border border-slate-200/80 bg-white/80 p-6 sm:p-8 shadow-xl shadow-slate-200/50 backdrop-blur-xl">
+            <div>
+              <div className="flex items-center justify-between border-b border-slate-200/80 pb-4">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-teal-600" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Live Content Sample
+                  </span>
+                </div>
+                <span className="text-[11px] font-semibold text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full">
+                  Interactive Studio
+                </span>
+              </div>
 
-            <SectionLabel>
-              Stay informed
-            </SectionLabel>
+              {/* Navigation Tabs */}
+              <div className="mt-6 flex flex-wrap gap-2">
+                {PREVIEWS.map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all duration-200 ${
+                        isActive
+                          ? "bg-slate-900 text-white shadow-md"
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
+                      }`}
+                    >
+                      <Icon className={`h-3.5 w-3.5 ${isActive ? "text-teal-400" : "text-slate-400"}`} />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
 
-            <h2 className="mx-auto max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Get technology insights delivered to your inbox.
-            </h2>
-
-            <p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-slate-400">
-              Keep up with technology trends, marketing insights and useful
-              resources without the noise.
-            </p>
-
-            <AnimatePresence mode="wait">
-              {submitted ? (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mx-auto mt-8 flex max-w-md items-center justify-center gap-3 rounded-full border border-teal-400/20 bg-teal-400/10 px-5 py-3 text-sm text-teal-300"
-                >
-                  <CheckCircle size={17} />
-                  You're subscribed successfully.
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  onSubmit={handleSubmit}
-                  className="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row"
-                >
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(event) =>
-                      setEmail(event.target.value)
-                    }
-                    placeholder="Enter your work email"
-                    required
-                    className="min-w-0 flex-1 rounded-full border border-white/10 bg-white/5 px-5 py-3.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-teal-400"
-                  />
-
-                  <button
-                    type="submit"
-                    className="group inline-flex items-center justify-center gap-2 rounded-full bg-teal-500 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-teal-400"
+              {/* Animated Tab Content Box */}
+              <div className="mt-6 min-h-[160px] rounded-2xl border border-slate-200/70 bg-slate-50/80 p-6">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeContent.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    Subscribe
-                    <ArrowRight
-                      size={16}
-                      className="transition-transform group-hover:translate-x-1"
-                    />
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
+                    <h3 className="text-base font-bold text-slate-900">
+                      {activeContent.title}
+                    </h3>
+                    <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                      “{activeContent.excerpt}”
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
 
-            <p className="relative mt-5 text-[11px] text-slate-600">
-              You can unsubscribe at any time.
+            <div className="mt-6 flex items-center justify-between text-xs text-slate-500 pt-4 border-t border-slate-200/80">
+              <span>Read time: ~3 mins per issue</span>
+              <span className="text-teal-600 font-medium">Curated by TechIntel Strategy Team</span>
+            </div>
+          </div>
+
+          {/* Right Column: Custom Subscription Form Card (5 Cols) */}
+          <div className="lg:col-span-5 flex flex-col justify-between rounded-3xl border border-slate-200/80 bg-gradient-to-b from-white to-slate-50 p-6 sm:p-8 shadow-xl shadow-slate-200/50 backdrop-blur-xl">
+            <div>
+              <h3 className="text-xl font-bold text-slate-950">
+                Join the Dispatch
+              </h3>
+              <p className="mt-1 text-xs text-slate-500">
+                Select your preferred email cadence:
+              </p>
+
+              {/* Cadence Toggle Buttons */}
+              <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-slate-100 p-1 border border-slate-200/70">
+                <button
+                  type="button"
+                  onClick={() => setCadence("weekly")}
+                  className={`flex items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-semibold transition-all ${
+                    cadence === "weekly"
+                      ? "bg-white text-slate-900 shadow-sm"
+                      : "text-slate-500 hover:text-slate-900"
+                  }`}
+                >
+                  {cadence === "weekly" && <Check className="h-3.5 w-3.5 text-teal-600" />}
+                  Weekly Digest
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCadence("monthly")}
+                  className={`flex items-center justify-center gap-1.5 rounded-xl py-2 text-xs font-semibold transition-all ${
+                    cadence === "monthly"
+                      ? "bg-white text-slate-900 shadow-sm"
+                      : "text-slate-500 hover:text-slate-900"
+                  }`}
+                >
+                  {cadence === "monthly" && <Check className="h-3.5 w-3.5 text-teal-600" />}
+                  Monthly Deep-Dive
+                </button>
+              </div>
+
+              {/* Form Input */}
+              <AnimatePresence mode="wait">
+                {submitted ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mt-6 flex items-center gap-3 rounded-2xl border border-teal-200 bg-teal-50/90 p-4 text-xs font-medium text-teal-900"
+                  >
+                    <CheckCircle className="h-5 w-5 text-teal-600 shrink-0" />
+                    <div>
+                      <p className="font-bold">Subscribed to {cadence} edition!</p>
+                      <p className="text-[11px] text-teal-700">Check your inbox for confirmation.</p>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="mt-6 space-y-3">
+                    <div className="relative">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                        <Mail className="h-4 w-4" />
+                      </div>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter work email"
+                        required
+                        className="w-full rounded-2xl border border-slate-200 bg-white pl-10 pr-4 py-3.5 text-xs text-slate-900 placeholder:text-slate-400 outline-none transition-all focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 shadow-sm"
+                      />
+                    </div>
+
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      type="submit"
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-teal-600 py-3.5 text-xs font-semibold text-white shadow-lg shadow-teal-600/20 hover:bg-teal-700 transition-all"
+                    >
+                      <span>Subscribe to {cadence === "weekly" ? "Weekly" : "Monthly"}</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </motion.button>
+                  </form>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <p className="mt-6 text-[11px] text-center text-slate-400">
+              No spam. Unsubscribe with one click anytime.
             </p>
           </div>
-        </motion.div>
 
+        </div>
       </div>
     </section>
   );

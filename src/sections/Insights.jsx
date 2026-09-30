@@ -1,46 +1,47 @@
 import SectionHeading from "../components/SectionHeading";
-import BlogCard from "../components/BlogCard";
 import ResourceCard from "../components/ResourceCard";
 import Reveal from "../components/Reveal";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
 function Insights() {
-  const blogs = [
-    {
-      title: "The changing role of technology buyers in the digital age",
-      excerpt:
-        "Explore how technology decision-makers are discovering, evaluating and selecting solutions.",
-      category: "Technology",
-      slug: "changing-role-of-technology-buyers",
-      date: "Insights",
-    },
-    {
-      title: "Building a B2B technology content strategy",
-      excerpt:
-        "A practical look at creating content that supports awareness, consideration and demand.",
-      category: "Marketing",
-      slug: "b2b-technology-content-strategy",
-      date: "Insights",
-    },
-    {
-      title: "From audience data to better campaign decisions",
-      excerpt:
-        "How audience intelligence can help technology marketers make more informed campaign choices.",
-      category: "Demand Generation",
-      slug: "audience-data-campaign-decisions",
-      date: "Insights",
-    },
-  ];
-
   const resources = [
     {
-      title: "The Future of Enterprise Technology",
+      title: "Build and Secure AI Apps and Agents at Scale",
       description:
-        "A research-led resource exploring key technology trends and business priorities.",
-      category: "Report",
+        "Explore security best practices and architecture frameworks for deploying scalable AI agents safely.",
+      category: "Technology",
       type: "eBook",
       slug: "future-of-enterprise-technology",
+      image:
+        "https://techintel.tech/lp/build-and-secure-ai-apps-and-agents-at-scale/Images/banner_1235.png",
+    },
+    {
+      title: "A step-by-step framework to build agents",
+      description:
+        "A practical developer roadmap covering dynamic memory, LLM tool integration, and agent loop execution.",
+      category: "Technology",
+      type: "Guide",
+      image:
+        "https://techintel.tech/lp/a-step-by-step-framework-to-build-agents/Images/ey%20image%20.png",
+    },
+    {
+      title: "Making AI Deliver",
+      description:
+        "Bridge the gap between generative AI experimentation and business ROI with proven governance practices.",
+      category: "Technology",
+      type: "Whitepaper",
+      image:
+        "https://techintel.tech/lp/Making-AI-Deliver-gdpr/Images/2026-04-democratization-in-the-ai-age-lp-360x360-2x.png",
+    },
+    {
+      title: "State of AI Agents",
+      description:
+        "A global enterprise survey on AI adoption, agentic workflow architectures, and infrastructure spend.",
+      category: "Technology",
+      type: "eBook",
+      image:
+        "https://techintel.tech/lp/state-of-ai-agents-gdpr/Images/lp-headerhero-image-2026-01-eb-state-of-ai-agents.png",
     },
   ];
 
@@ -50,17 +51,17 @@ function Insights() {
 
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHeading
-            label="Insights & resources"
+            label="Resources"
             number="03"
-            title="Ideas that keep technology marketers moving."
-            description="Explore perspectives, reports and useful resources created around the changing technology landscape."
+            title="Resources for today's technology teams."
+            description="Explore practical guides, reports and eBooks on the technologies shaping business."
           />
 
           <Link
-            to="/blogs"
+            to="/resources"
             className="group flex w-fit items-center gap-2 text-sm font-semibold text-slate-950"
           >
-            View all insights
+            View all resources
             <ArrowUpRight
               size={17}
               className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -69,47 +70,49 @@ function Insights() {
         </div>
 
         <div className="mt-14 grid gap-6 lg:grid-cols-3">
-          {blogs.map((blog, index) => (
+          {resources.slice(0, 3).map((resource, index) => (
             <Reveal
-              key={blog.slug}
+              key={resource.title}
               delay={index * 0.08}
             >
-              <BlogCard blog={blog} />
+              <ResourceCard resource={resource} linkTo="/resources" />
             </Reveal>
           ))}
         </div>
 
         <div className="mt-10">
-          <Reveal>
-            <div className="grid gap-6 lg:grid-cols-[1fr_.45fr]">
-
+          <div className="grid gap-6 lg:grid-cols-[1fr_.45fr]">
+            <Reveal>
               <div className="rounded-3xl bg-slate-950 p-8 text-white lg:p-10">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-teal-400">
-                  Featured resource
+                  More resources
                 </p>
 
                 <h3 className="mt-5 max-w-2xl text-3xl font-bold leading-tight sm:text-4xl">
-                  Go deeper with research built for today's technology buyers.
+                  Research to help you make confident technology decisions.
                 </h3>
 
                 <p className="mt-4 max-w-xl text-sm leading-6 text-slate-400">
-                  Access reports, eBooks and research designed to help
-                  technology professionals make informed decisions.
+                  Find expert guides and research on AI, enterprise technology,
+                  and the trends shaping business.
                 </p>
 
                 <Link
                   to="/resources"
                   className="mt-7 inline-flex items-center gap-2 rounded-full bg-teal-500 px-5 py-3 text-sm font-semibold transition hover:bg-teal-400"
                 >
-                  Explore resources
+                  Browse all resources
                   <ArrowUpRight size={16} />
                 </Link>
               </div>
-
-              <ResourceCard resource={resources[0]} />
-
-            </div>
-          </Reveal>
+            </Reveal>
+            <Reveal delay={0.14}>
+              <ResourceCard
+                resource={resources[3]}
+                linkTo="/resources"
+              />
+            </Reveal>
+          </div>
         </div>
 
       </div>

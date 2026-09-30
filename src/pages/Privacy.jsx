@@ -82,7 +82,7 @@ function Privacy() {
             </h1>
 
             <p className="mt-6 text-sm text-slate-400">
-              Last updated: September 2026
+              Last updated: December 09, 2025
             </p>
 
           </div>
@@ -92,7 +92,7 @@ function Privacy() {
         {/* =====================================================
             TERMLY PRIVACY POLICY
         ====================================================== */}
-        <section className="bg-white py-20 lg:py-28">
+        <section className="bg-white pb-20 pt-8 lg:pb-28 lg:pt-12">
           <article className="mx-auto max-w-5xl px-6 lg:px-8">
 
             {/* =================================================
@@ -195,6 +195,12 @@ function Privacy() {
           width: 100%;
           color: #475569;
           line-height: 1.8;
+          overflow: hidden;
+        }
+
+        .termly-policy iframe {
+          transform: translateY(-120px);
+          margin-bottom: -120px;
         }
 
 

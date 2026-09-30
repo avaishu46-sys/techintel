@@ -3,9 +3,6 @@ import { motion } from "framer-motion";
 function LogoMarquee({ logos = [] }) {
   if (!logos.length) return null;
 
-  const firstRow = logos;
-  const secondRow = [...logos].reverse();
-
   return (
     <div className="relative w-full overflow-hidden py-6 sm:py-8">
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-[65%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-cyan-400/[0.06] via-teal-400/[0.10] to-violet-400/[0.06] blur-3xl" />
@@ -38,21 +35,7 @@ function LogoMarquee({ logos = [] }) {
       <div className="pointer-events-none absolute left-0 top-0 z-30 h-full w-24 bg-gradient-to-r from-white via-white/90 to-transparent sm:w-40 lg:w-56" />
       <div className="pointer-events-none absolute right-0 top-0 z-30 h-full w-24 bg-gradient-to-l from-white via-white/90 to-transparent sm:w-40 lg:w-56" />
 
-      <LogoRow logos={firstRow} direction="left" duration={34} />
-
-      <div className="relative z-20 my-3 flex justify-center">
-        <div className="flex items-center gap-3 rounded-full border border-slate-200/80 bg-white/90 px-4 py-2 shadow-[0_8px_30px_rgba(15,23,42,0.05)] backdrop-blur-md">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-500" />
-          </span>
-          <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
-            Technology ecosystem
-          </span>
-        </div>
-      </div>
-
-      <LogoRow logos={secondRow} direction="right" duration={40} />
+      <LogoRow logos={logos} direction="left" duration={34} />
     </div>
   );
 }
