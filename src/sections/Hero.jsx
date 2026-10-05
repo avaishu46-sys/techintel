@@ -228,9 +228,6 @@ export default function Hero() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Word                                                                */
-/* ------------------------------------------------------------------ */
 function Word({ word, progress, start, end }) {
   const range = useMemo(() => [start, end], [start, end]);
   const opacity = useTransform(progress, range, [0.2, 1]);

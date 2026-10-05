@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Linkedin, ArrowUp } from "lucide-react";
 import logo from "../assets/logos/tech-logo.png";
 import isoBadge from "../assets/logos/Untitled-design-11-removebg-preview.png";
-import bgImage from "../assets/images/footer.avif"; 
 
 const linkClass =
   "block text-[15px] leading-[34px] text-white transition-colors hover:text-white/70";
@@ -10,13 +9,13 @@ const linkClass =
 function Footer() {
   const currentYear = new Date().getFullYear();
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
   return (
     <footer 
-      className="relative border-t-4 border-teal-200 bg-cover bg-center bg-no-repeat text-white overflow-hidden"
-      style={{ backgroundImage: `url(${bgImage})` }}
+      className="relative overflow-hidden border-t-4 border-teal-200 bg-[#02181d] text-white"
     >
-      <div className="absolute inset-0 bg-slate-700/80 backdrop-blur-[2px] pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,#005b6a_0%,#02232a_50%,#011115_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,242,254,0.25)_0%,transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(0,229,255,0.2)_0%,transparent_60%)]" />
       <div className="relative z-10 mx-auto max-w-[1580px] px-5 pt-12 lg:px-5">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
                     <div>

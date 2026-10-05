@@ -23,7 +23,7 @@ function Contact() {
               Contact us
             </SectionLabel>
 
-            <h1 className="max-w-5xl text-5xl font-bold tracking-[-0.05em] sm:text-6xl lg:text-8xl">
+            <h1 className="max-w-5xl text-4xl font-bold tracking-[-0.05em] sm:text-6xl lg:text-8xl">
               Let's talk about
               <span className="block text-teal-400">
                 what's next.
@@ -40,10 +40,10 @@ function Contact() {
 
         {/* CONTACT */}
         <section className="bg-slate-50 py-20 lg:py-28">
-          <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[.7fr_1.3fr] lg:px-8">
+          <div className="mx-auto grid min-w-0 max-w-7xl grid-cols-1 gap-12 px-6 lg:grid-cols-[.7fr_1.3fr] lg:px-8">
 
             {/* Information */}
-            <Reveal>
+            <Reveal className="min-w-0">
               <div>
                 <SectionHeading
                   label="Start a conversation"
@@ -106,7 +106,7 @@ function Contact() {
             </Reveal>
 
             {/* Form */}
-            <Reveal delay={0.15}>
+            <Reveal delay={0.15} className="min-w-0">
               <ContactForm />
             </Reveal>
 

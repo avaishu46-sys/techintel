@@ -1,31 +1,38 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 
-// Pages
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import Resources from "./pages/Resources";
-import ResourceDetails from "./pages/ResourceDetails";
-import Blogs from "./pages/Blogs";
-import BlogDetails from "./pages/BlogDetails";
-import CaseStudies from "./pages/CaseStudies";
-import CaseStudyDetails from "./pages/CaseStudyDetails";
-import Contact from "./pages/Contact";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import CookiePolicy from "./pages/cookie-policy";
-import DoNotShare from "./pages/do-not-share";
-import Accessibility from "./pages/accessibility";
-import GDPRPolicy from "./pages/GDPR_Policy";
-import Unsubscribe from "./pages/unsubscribe";
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Services = lazy(() => import("./pages/Services"));
+const Resources = lazy(() => import("./pages/Resources"));
+const ResourceDetails = lazy(() => import("./pages/ResourceDetails"));
+const Blogs = lazy(() => import("./pages/Blogs"));
+const BlogDetails = lazy(() => import("./pages/BlogDetails"));
+const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+const CaseStudyDetails = lazy(() => import("./pages/CaseStudyDetails"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const CookiePolicy = lazy(() => import("./pages/cookie-policy"));
+const DoNotShare = lazy(() => import("./pages/do-not-share"));
+const Accessibility = lazy(() => import("./pages/accessibility"));
+const GDPRPolicy = lazy(() => import("./pages/GDPR_Policy"));
+const Unsubscribe = lazy(() => import("./pages/unsubscribe"));
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout />}>
+      <Suspense
+        fallback={
+          <div className="flex min-h-screen items-center justify-center bg-white text-sm font-medium text-slate-500" role="status">
+            Loading page...
+          </div>
+        }
+      >
+        <Routes>
+          <Route element={<MainLayout />}>
           {/* Home */}
           <Route path="/" element={<Home />} />
 
@@ -66,8 +73,9 @@ function App() {
           <Route path="/accessibility" element={<Accessibility />} />
           <Route path="/gdpr" element={<GDPRPolicy />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
-        </Route>
-      </Routes>
+          </Route>
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

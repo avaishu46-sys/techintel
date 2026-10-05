@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Reveal from "../components/Reveal";
 
 // Helper CountUp Component with IntersectionObserver / Reset support
-const CountUpAnimated = ({ end, prefix = "", suffix = "", duration = 2000, isVisible }) => {
+const CountUpAnimated = ({ end, prefix = "", suffix = "", duration = 2000, isVisible, compact = false }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -34,7 +34,9 @@ const CountUpAnimated = ({ end, prefix = "", suffix = "", duration = 2000, isVis
   }, [end, duration, isVisible]);
 
   // Format numbers with commas (e.g. 1,000,000) if raw value is high
-  const formattedCount = count.toLocaleString();
+  const formattedCount = compact && count >= 1000000
+    ? `${Math.floor(count / 1000000)}M`
+    : count.toLocaleString();
 
   return (
     <span>
@@ -94,42 +96,69 @@ function Stats() {
   ];
 
   return (
-    <section 
-      ref={sectionRef} 
-      className="relative overflow-hidden bg-slate-950 py-24 text-white lg:py-32"
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden border-y border-white/10 bg-[#02181d] py-20 text-white lg:py-24"
     >
-      {/* Background Decorative Gradient Glow */}
-      <div 
-        className="aria-hidden:true pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 blur-3xl opacity-20"
-      >
-        <div className="h-[350px] w-[800px] bg-gradient-to-tr from-blue-600 to-violet-500 rounded-full" />
-      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,229,255,0.16)_0%,transparent_55%)]"
+      />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat, index) => (
-            <Reveal key={stat.label} delay={index * 0.1}>
-              <div className="group relative h-full rounded-2xl border border-white/10 bg-slate-900/40 p-8 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:bg-slate-900/80 hover:shadow-xl hover:shadow-blue-500/10">
-                {/* Decorative Top Accent Line */}
-                <div className="absolute top-0 left-8 right-8 h-[2px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                {/* Number Display */}
-                <div className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400 sm:text-5xl group-hover:from-blue-400 group-hover:to-violet-400 transition-all duration-300">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,2fr)] lg:items-center lg:gap-14">
+          <div className="border-b border-white/15 pb-8 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-10">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-300">
+              Our impact
+            </p>
+            <h2 className="mt-3 text-2xl font-bold text-white sm:text-3xl">
+              Built for measurable reach
+            </h2>
+            <Reveal>
+              <div className="mt-8 border-l-2 border-teal-300 pl-5">
+                <div className="whitespace-nowrap text-7xl font-extrabold tracking-tight text-white tabular-nums sm:text-8xl">
                   <CountUpAnimated
-                    end={stat.value}
-                    suffix={stat.suffix}
+                    end={stats[0].value}
+                    suffix={stats[0].suffix}
                     isVisible={isVisible}
                     duration={2200}
+                    compact={stats[0].formattedDisplay}
                   />
                 </div>
-
-                {/* Label */}
-                <p className="mt-4 text-sm font-medium leading-6 text-slate-400 group-hover:text-slate-300 transition-colors duration-200">
-                  {stat.label}
+                <p className="mt-2 max-w-xs text-sm font-medium leading-6 text-cyan-100/70">
+                  {stats[0].label}
                 </p>
               </div>
             </Reveal>
-          ))}
+          </div>
+
+          <div className="grid grid-cols-2 gap-y-8 sm:grid-cols-3 sm:gap-y-0">
+            {stats.slice(1).map((stat, index) => (
+              <Reveal key={stat.label} delay={index * 0.1}>
+                <div
+                  className={`min-w-0 py-1 ${
+                    index === 1
+                      ? "border-l border-white/15 pl-4 sm:pl-6 lg:pl-8"
+                      : index === 2
+                        ? "sm:border-l sm:border-white/15 sm:pl-6 lg:pl-8"
+                        : ""
+                  }`}
+                >
+                  <div className="whitespace-nowrap text-4xl font-extrabold tracking-tight text-cyan-300 tabular-nums sm:text-5xl">
+                    <CountUpAnimated
+                      end={stat.value}
+                      suffix={stat.suffix}
+                      isVisible={isVisible}
+                      duration={2200}
+                    />
+                  </div>
+                  <p className="mt-3 max-w-40 text-xs font-medium leading-5 text-cyan-100/70 sm:text-sm">
+                    {stat.label}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>

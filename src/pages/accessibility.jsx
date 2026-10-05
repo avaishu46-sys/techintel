@@ -396,7 +396,7 @@ function Accessibility() {
           margin: 0 0 25px;
           padding-left: 18px;
           color: #121e32;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: "Poppins", sans-serif;
           font-size: 26px;
           font-weight: 700;
           line-height: 1.25;
@@ -415,7 +415,7 @@ function Accessibility() {
 
         .legal-section p {
           color: #595959;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: "Poppins", sans-serif;
           font-size: 15px;
           line-height: 1.8;
           margin: 0 0 18px;
@@ -444,7 +444,7 @@ function Accessibility() {
 
         .legal-section li {
           color: #595959;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: "Poppins", sans-serif;
           font-size: 15px;
           line-height: 1.8;
           margin-bottom: 10px;
@@ -529,7 +529,7 @@ function Accessibility() {
 
         address {
           color: #595959;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: "Poppins", sans-serif;
           font-size: 15px;
           font-style: normal;
           line-height: 1.8;
@@ -562,7 +562,7 @@ function Accessibility() {
 
         .authority-item span {
           color: #4a5568;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: "Poppins", sans-serif;
           font-size: 15px;
         }
 
@@ -578,7 +578,7 @@ function Accessibility() {
 
         .accessibility-closing p {
           color: #718096;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: "Poppins", sans-serif;
           font-size: 14px;
           line-height: 1.7;
         }
@@ -615,7 +615,7 @@ function Accessibility() {
         .sidebar-card h3 {
           margin: 0 0 15px;
           color: #ffffff;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: "Poppins", sans-serif;
           font-size: 24px;
           font-weight: 700;
           line-height: 1.3;

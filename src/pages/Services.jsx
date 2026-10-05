@@ -98,7 +98,7 @@ function Services() {
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              className="max-w-5xl text-5xl font-bold tracking-[-0.05em] sm:text-6xl lg:text-8xl"
+              className="max-w-5xl text-4xl font-bold tracking-[-0.05em] sm:text-6xl lg:text-8xl"
             >
               Turning technology
               <span className="block text-teal-400">

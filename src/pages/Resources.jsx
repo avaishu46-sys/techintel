@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -9,18 +9,76 @@ import {
   X,
   Filter,
   TrendingUp,
-  ChevronRight,
+  Layers,
+  ShieldCheck,
+  Cpu,
+  Briefcase,
+  Users,
+  ShoppingBag,
+  Server,
+  Cloud,
+  Brain,
+  Lock,
 } from "lucide-react";
+
+const CATEGORY_ICONS = {
+  All: Layers,
+  Cybersecurity: ShieldCheck,
+  Technology: Cpu,
+  Finance: Briefcase,
+  HR: Users,
+  "E-commerce": ShoppingBag,
+  IT: Server,
+  Cloud,
+  AI: Brain,
+  Security: Lock,
+};
+
+const CATEGORY_ICON_STYLES = {
+  All: "bg-teal-100 text-teal-700",
+  Cybersecurity: "bg-rose-100 text-rose-700",
+  Technology: "bg-cyan-100 text-cyan-700",
+  Finance: "bg-emerald-100 text-emerald-700",
+  HR: "bg-orange-100 text-orange-700",
+  "E-commerce": "bg-amber-100 text-amber-700",
+  IT: "bg-blue-100 text-blue-700",
+  Cloud: "bg-sky-100 text-sky-700",
+  AI: "bg-violet-100 text-violet-700",
+  Security: "bg-red-100 text-red-700",
+};
 
 export default function Resources() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [activeTab, setActiveTab] = useState("all"); // 'all', 'trending', 'ebooks'
   const [currentPage, setCurrentPage] = useState(1);
+  const [importedResources, setImportedResources] = useState([]);
+  const [resourceLoadError, setResourceLoadError] = useState(false);
   const itemsPerPage = 6;
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch(`${import.meta.env.BASE_URL}resource-assets.json`, {
+      signal: controller.signal,
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Resource data failed to load");
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) throw new Error("Resource data is invalid");
+        setImportedResources(data);
+      })
+      .catch((error) => {
+        if (error.name !== "AbortError") setResourceLoadError(true);
+      });
+
+    return () => controller.abort();
+  }, []);
+
   // Real dataset
-  const resources = [
+  const curatedResources = useMemo(() => [
     {
       id: "1",
       title: "Build and Secure AI Apps and Agents at Scale",
@@ -347,12 +405,29 @@ export default function Resources() {
               trending: true,
               downloads: "18.1k"
             },
-  ];
+  ], []);
+
+  const resources = useMemo(() => {
+    const resourcesByLink = new Map();
+    for (const resource of [...importedResources, ...curatedResources]) {
+      const key = resource.link || `missing:${resource.id}`;
+      resourcesByLink.set(key, resource);
+    }
+    return Array.from(resourcesByLink.values());
+  }, [importedResources, curatedResources]);
 
   // Dynamically derive categories
   const categories = useMemo(() => {
-    const unique = Array.from(new Set(resources.map((r) => r.category.trim())));
-    return ["All", ...unique, "Cybersecurity", "Cloud", "IT"];
+    const counts = resources.reduce((categoryCounts, resource) => {
+      const name = resource.category.trim();
+      categoryCounts.set(name, (categoryCounts.get(name) ?? 0) + 1);
+      return categoryCounts;
+    }, new Map());
+
+    return [
+      { name: "All", count: resources.length },
+      ...Array.from(counts, ([name, count]) => ({ name, count })),
+    ];
   }, [resources]);
 
   // Filter logic
@@ -360,9 +435,11 @@ export default function Resources() {
     return resources.filter((resource) => {
       const matchesCategory =
         category === "All" || resource.category.trim() === category;
+      const searchTerm = search.trim().toLowerCase();
       const matchesSearch =
-        resource.title.toLowerCase().includes(search.toLowerCase()) ||
-        resource.description.toLowerCase().includes(search.toLowerCase());
+        resource.title.toLowerCase().includes(searchTerm) ||
+        resource.description.toLowerCase().includes(searchTerm) ||
+        resource.category.toLowerCase().includes(searchTerm);
       const matchesTab =
         activeTab === "all" ||
         (activeTab === "trending" && resource.trending) ||
@@ -374,6 +451,18 @@ export default function Resources() {
 
   // Pagination bounds
   const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
+  const pageNumbers = Array.from(
+    new Set([
+      1,
+      totalPages,
+      ...Array.from(
+        { length: Math.max(0, Math.min(totalPages, currentPage + 2) - Math.max(1, currentPage - 2) + 1) },
+        (_, index) => Math.max(1, currentPage - 2) + index
+      ),
+    ])
+  )
+    .filter((page) => page >= 1 && page <= totalPages)
+    .sort((a, b) => a - b);
   const currentAssets = useMemo(() => {
     return filteredResources.slice(
       (currentPage - 1) * itemsPerPage,
@@ -438,7 +527,8 @@ export default function Resources() {
                   </div>
                   <input
                     type="text"
-                    placeholder="Search by topic (e.g. 'AI Agents', 'Tax')..."
+                    aria-label="Search resources by name, topic, or category"
+                    placeholder="Search resources by name or category"
                     value={search}
                     onChange={(e) => {
                       setSearch(e.target.value);
@@ -508,13 +598,78 @@ export default function Resources() {
       {/* 2. MAIN RESOURCE CONTENT LAYOUT */}
       <section className="py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mb-10 border-b border-slate-200 pb-8">
+            <div className="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.16em] text-cyan-700">
+                  Resource library
+                </p>
+                <h2 className="text-xl font-bold text-slate-950">
+                  Browse categories
+                </h2>
+              </div>
+              <span className="pb-1 text-xs font-medium text-slate-500">
+                {categories.length - 1} topics
+              </span>
+            </div>
+
+            <nav
+              aria-label="Resource categories"
+              className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5"
+            >
+              {categories.map(({ name: cat, count }) => (
+                <button
+                  key={cat}
+                  onClick={() => { setCategory(cat); setCurrentPage(1); }}
+                  aria-pressed={category === cat}
+                  className={`group flex min-h-[60px] items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
+                    category === cat
+                      ? "bg-[#02181d] text-white shadow-md shadow-slate-950/10"
+                      : "bg-white text-slate-700 hover:bg-cyan-50"
+                  }`}
+                >
+                  <span
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                      category === cat
+                        ? "bg-white/10 text-cyan-200"
+                        : CATEGORY_ICON_STYLES[cat] || "bg-slate-100 text-slate-600"
+                    }`}
+                  >
+                    {(() => {
+                      const CategoryIcon = CATEGORY_ICONS[cat] || Filter;
+                      return <CategoryIcon className="h-4 w-4" aria-hidden="true" />;
+                    })()}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-xs font-semibold">
+                      {cat}
+                    </span>
+                    <span
+                      className={`mt-0.5 block text-[10px] tabular-nums ${
+                        category === cat ? "text-white/65" : "text-slate-500"
+                      }`}
+                    >
+                      {count.toLocaleString()} {count === 1 ? "resource" : "resources"}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </nav>
+
+            {resourceLoadError && (
+              <p className="mt-3 text-xs text-amber-700" role="status">
+                Some resources could not be loaded. Showing available assets.
+              </p>
+            )}
+          </div>
+
           {/* View Tabs & Status */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-6 mb-10">
             {/* Asset Format Tabs */}
-            <div className="flex items-center gap-1 rounded-xl bg-slate-200/70 p-1 w-fit">
+            <div className="flex w-fit min-w-0 max-w-full shrink-0 items-center gap-1 overflow-x-auto rounded-xl bg-slate-200/70 p-1 sm:shrink">
               <button
                 onClick={() => { setActiveTab("all"); setCurrentPage(1); }}
-                className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
+                className={`shrink-0 rounded-lg px-4 py-2 text-xs font-bold transition ${
                   activeTab === "all"
                     ? "bg-white text-slate-950 shadow-sm"
                     : "text-slate-600 hover:text-slate-900"
@@ -524,7 +679,7 @@ export default function Resources() {
               </button>
               <button
                 onClick={() => { setActiveTab("trending"); setCurrentPage(1); }}
-                className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition ${
+                className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold transition ${
                   activeTab === "trending"
                     ? "bg-white text-slate-950 shadow-sm"
                     : "text-slate-600 hover:text-slate-900"
@@ -535,7 +690,7 @@ export default function Resources() {
               </button>
               <button
                 onClick={() => { setActiveTab("ebooks"); setCurrentPage(1); }}
-                className={`rounded-lg px-4 py-2 text-xs font-bold transition ${
+                className={`shrink-0 rounded-lg px-4 py-2 text-xs font-bold transition ${
                   activeTab === "ebooks"
                     ? "bg-white text-slate-950 shadow-sm"
                     : "text-slate-600 hover:text-slate-900"
@@ -548,7 +703,23 @@ export default function Resources() {
             {/* Results Count & Clear Button */}
             <div className="flex items-center gap-3 text-xs text-slate-500">
               <p>
-                Showing <span className="font-semibold text-slate-900">{filteredResources.length}</span> results
+                {filteredResources.length === 0 ? (
+                  "Showing 0 results"
+                ) : (
+                  <>
+                    Showing{" "}
+                    <span className="font-semibold text-slate-900">
+                      {(currentPage - 1) * itemsPerPage + 1}
+                      -
+                      {Math.min(currentPage * itemsPerPage, filteredResources.length)}
+                    </span>{" "}
+                    of{" "}
+                    <span className="font-semibold text-slate-900">
+                      {filteredResources.length}
+                    </span>{" "}
+                    results
+                  </>
+                )}
               </p>
               {(search || category !== "All" || activeTab !== "all") && (
                 <button
@@ -561,42 +732,9 @@ export default function Resources() {
             </div>
           </div>
 
-          {/* 2-Column Sidebar + Cards Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            {/* Left Sticky Sidebar Filter */}
-            <aside className="lg:col-span-3">
-              <div className="sticky top-28 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex items-center gap-2 pb-4 mb-4 border-b border-slate-100 text-xs font-bold uppercase tracking-wider text-slate-400">
-                  <Filter className="h-3.5 w-3.5 text-cyan-600" />
-                  Categories
-                </div>
-
-                <nav className="flex flex-col gap-1">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => { setCategory(cat); setCurrentPage(1); }}
-                      className={`group flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold transition ${
-                        category === cat
-                          ? "bg-slate-950 text-white shadow-md shadow-slate-950/10"
-                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                      }`}
-                    >
-                      <span>{cat}</span>
-                      <ChevronRight
-                        className={`h-3.5 w-3.5 transition-transform ${
-                          category === cat ? "text-cyan-400 translate-x-0.5" : "text-slate-400 opacity-0 group-hover:opacity-100"
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </nav>
-              </div>
-            </aside>
-
-            {/* Main Cards Grid */}
-            <div className="lg:col-span-9">
-              <motion.div layout className="grid gap-6 sm:grid-cols-2">
+          {/* Resource Cards */}
+          <div>
+              <motion.div layout className="grid min-w-0 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 <AnimatePresence mode="popLayout">
                   {currentAssets.length > 0 ? (
                     currentAssets.map((resource, index) => (
@@ -607,7 +745,7 @@ export default function Resources() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.2, delay: index * 0.04 }}
-                        className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300 hover:shadow-lg"
+                        className="group flex min-w-0 flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300 hover:shadow-lg"
                       >
                         <div>
                           {/* Image Thumbnail */}
@@ -637,26 +775,32 @@ export default function Resources() {
                             <span>{resource.readTime}</span>
                           </div>
 
-                          <h3 className="text-base font-bold text-slate-900 leading-snug group-hover:text-cyan-600 transition duration-200">
+                          <h3 className="break-words text-base font-bold leading-snug text-slate-900 transition duration-200 group-hover:text-cyan-600">
                             {resource.title}
                           </h3>
 
-                          <p className="mt-2 text-xs leading-relaxed text-slate-600 line-clamp-2">
+                          <p className="mt-2 break-words text-xs leading-relaxed text-slate-600 line-clamp-2">
                             {resource.description}
                           </p>
                         </div>
 
                         {/* Action Footer */}
                         <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                          <a    
-                            href={resource.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition"
-                          >
-                            View Details
-                            <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                          </a>
+                          {resource.link ? (
+                            <a
+                              href={resource.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 transition hover:text-cyan-700"
+                            >
+                              View Details
+                              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </a>
+                          ) : (
+                            <span className="text-xs font-medium text-slate-400">
+                              Details unavailable
+                            </span>
+                          )}
                         </div>
                       </motion.div>
                     ))
@@ -682,7 +826,7 @@ export default function Resources() {
 
               {/* Pagination Controls */}
               {totalPages > 1 && (
-                <div className="mt-12 flex items-center justify-center gap-2">
+                <div className="mt-12 flex max-w-full flex-wrap items-center justify-center gap-2">
                   <button
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -691,18 +835,30 @@ export default function Resources() {
                     &laquo; Prev
                   </button>
 
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <button
+                  {pageNumbers.map((page, index) => (
+                    <span
                       key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`h-9 w-9 rounded-lg text-xs font-semibold transition ${
-                        currentPage === page
-                          ? "bg-slate-950 text-white shadow-md"
-                          : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-100"
+                      className={`items-center gap-2 ${
+                        page === currentPage ? "flex" : "hidden sm:flex"
                       }`}
                     >
-                      {page}
-                    </button>
+                      {index > 0 && page - pageNumbers[index - 1] > 1 && (
+                        <span className="hidden px-1 text-xs text-slate-400 sm:inline" aria-hidden="true">
+                          ...
+                        </span>
+                      )}
+                      <button
+                        onClick={() => setCurrentPage(page)}
+                        aria-current={currentPage === page ? "page" : undefined}
+                        className={`h-9 w-9 rounded-lg text-xs font-semibold transition ${
+                          currentPage === page
+                            ? "bg-slate-950 text-white shadow-md"
+                            : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-100"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    </span>
                   ))}
 
                   <button
@@ -714,7 +870,6 @@ export default function Resources() {
                   </button>
                 </div>
               )}
-            </div>
           </div>
         </div>
       </section>
