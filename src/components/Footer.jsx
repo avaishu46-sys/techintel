@@ -70,7 +70,7 @@ function Footer() {
               </li>
               <li className="pt-1">
                 <a
-                  href="https://www.linkedin.com/"
+                  href="https://www.linkedin.com/company/prospect-precise-llc/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="TechIntel on LinkedIn"

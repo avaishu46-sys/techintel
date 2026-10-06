@@ -89,9 +89,9 @@ const STATEMENT =
 const WORDS = STATEMENT.split(" ");
 
 // Scroll timeline (0 -> 1 over the sticky area)
-const REVEAL_START = 0.12;
-const REVEAL_END = 0.85; // last word starts lighting up here
-const WORD_SPAN = 0.04; // each word's fade-in length
+const REVEAL_START = 0.22;
+const REVEAL_END = 0.88; // last word starts lighting up here
+const WORD_SPAN = 0.035; // each word's fade-in length
 
 export default function Hero() {
   const containerRef = useRef(null);
@@ -102,30 +102,30 @@ export default function Hero() {
   });
 
   // Section 1 fade-out
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.09], [1, 0]);
-  const heroY = useTransform(scrollYProgress, [0, 0.09], [0, -30]);
+  const heroOpacity = useTransform(scrollYProgress, [0.04, 0.17], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0.04, 0.17], [0, -30]);
   const heroDisplay = useTransform(scrollYProgress, (v) =>
-    v >= 0.1 ? "none" : "flex"
+    v >= 0.18 ? "none" : "flex"
   );
 
-  // Background gets dark and STAYS dark until the very end of the sticky area.
+  // Gradually dim the hero image as the statement comes into focus.
   const bgDimOpacity = useTransform(
     scrollYProgress,
-    [0.04, 0.13, 1],
+    [0.1, 0.25, 1],
     [0, 0.62, 0.62]
   );
 
-  // Statement fades in once, then holds at 1 (nothing fades it out).
+  // Bring the statement in after the headline and cards begin fading away.
   const statementOpacity = useTransform(
     scrollYProgress,
-    [0.09, 0.15, 1],
+    [0.15, 0.24, 1],
     [0, 1, 1]
   );
 
   return (
     <div
       ref={containerRef}
-      className="relative z-10 h-[300vh] bg-[#030812] text-white select-none"
+      className="relative z-10 h-[220vh] bg-[#030812] text-white select-none"
     >
       {/* STICKY FULLSCREEN VIEWPORT */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -195,7 +195,7 @@ export default function Hero() {
         {/* CARD SLIDER (bottom, cards bleed off the sides and bottom) */}
         <motion.div
           style={{ opacity: heroOpacity, display: heroDisplay }}
-          className="absolute inset-x-0 bottom-0 z-10 h-[40vh]"
+          className="absolute inset-x-0 bottom-0 z-10 h-[36vh]"
         >
           <CardSlider />
         </motion.div>
