@@ -33,9 +33,13 @@ const CountUpAnimated = ({ end, prefix = "", suffix = "", duration = 2000, isVis
     return () => cancelAnimationFrame(animationFrameId);
   }, [end, duration, isVisible]);
 
-  // Format numbers with commas (e.g. 1,000,000) if raw value is high
-  const formattedCount = compact && count >= 1000000
-    ? `${Math.floor(count / 1000000)}M`
+  // Keep the growing value compact so it stays inside its grid column.
+  const formattedCount = compact
+    ? count >= 1000000
+      ? `${Math.floor(count / 1000000)}M`
+      : count >= 1000
+        ? `${Math.floor(count / 1000)}k`
+        : count.toLocaleString()
     : count.toLocaleString();
 
   return (
@@ -116,7 +120,7 @@ function Stats() {
             </h2>
             <Reveal>
               <div className="mt-8 border-l-2 border-teal-300 pl-5">
-                <div className="whitespace-nowrap text-7xl font-extrabold tracking-tight text-white tabular-nums sm:text-8xl">
+                <div className="whitespace-nowrap text-6xl font-extrabold tracking-tight text-white tabular-nums sm:text-7xl lg:text-6xl xl:text-8xl">
                   <CountUpAnimated
                     end={stats[0].value}
                     suffix={stats[0].suffix}
