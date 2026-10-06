@@ -151,8 +151,9 @@ const highlights = [
 ];
 
 const locations = [
-  { city: "Pune", country: "India", note: "Delivery & operations" },
   { city: "Delaware", country: "USA", note: "Registered office" },
+  { city: "Pune", country: "India", note: "Delivery & operations" },
+  
 ];
 
 const nextSteps = [
@@ -464,7 +465,6 @@ function ChatGraphic() {
   );
 }
 
-/** Locations card: dashed arc between the two offices with a travelling dot */
 function RouteMap() {
   return (
     <svg
@@ -527,7 +527,6 @@ function RouteMap() {
   );
 }
 
-/** Paper plane that floats above the form */
 function PaperPlane() {
   return (
     <svg viewBox="0 0 120 80" className="h-full w-full" aria-hidden="true">
